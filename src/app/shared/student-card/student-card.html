@@ -1,0 +1,7 @@
+<div class="student-card">
+  <h3>{{ student().name }}</h3>
+  <p>{{ student().course }}</p>
+</div>
+<button (click)="studentDeleted.emit(student().name)">
+  Delete
+</button>
