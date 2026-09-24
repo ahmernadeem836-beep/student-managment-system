@@ -1,5 +1,5 @@
 import { Component,input,output} from '@angular/core';
-
+import { Student } from '../../models/student.models';
 @Component({
   imports: [],
   selector: 'app-student-card',
@@ -7,6 +7,6 @@ import { Component,input,output} from '@angular/core';
   templateUrl: './student-card.html',
 })
 export class StudentCard {
-student = input.required<{ name: string; course: string }>();
-studentDeleted = output<string>();
+  student = input.required<Student>();
+  studentDeleted = output<number>();
 }

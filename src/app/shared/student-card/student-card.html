@@ -2,6 +2,6 @@
   <h3>{{ student().name }}</h3>
   <p>{{ student().course }}</p>
 </div>
-<button (click)="studentDeleted.emit(student().name)">
+<button (click)="studentDeleted.emit(student().id)">
   Delete
 </button>

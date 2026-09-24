@@ -1,0 +1,44 @@
+<h2>Add Student</h2>
+
+<form [formGroup]="studentForm" (submit)="addStudent($event)">
+  <input
+    type="text"
+    placeholder="Student Name"
+    formControlName="name"
+  >
+
+  @if (studentForm.controls.name.touched && studentForm.controls.name.invalid) {
+    <small>Student name is required.</small>
+  }
+
+  <input
+    type="email"
+    placeholder="Student Email"
+    formControlName="email"
+  >
+
+  @if (studentForm.controls.email.touched && studentForm.controls.email.invalid) {
+    <small>Enter a valid email.</small>
+  }
+
+  <input
+    type="text"
+    placeholder="Course"
+    formControlName="course"
+  >
+
+  @if (studentForm.controls.course.touched && studentForm.controls.course.invalid) {
+    <small>Course is required.</small>
+  }
+
+  <button type="submit">Add Student</button>
+</form>
+
+<h2>Students</h2>
+
+@for (student of students(); track student.id) {
+  <app-student-card
+    [student]="student"
+    (studentDeleted)="onStudentDeleted($event)"
+  ></app-student-card>
+}
