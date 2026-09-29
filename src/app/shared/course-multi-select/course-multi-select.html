@@ -1,0 +1,39 @@
+<div class="course-select">
+
+  <button
+    type="button"
+    class="select-button"
+    (click)="toggleDropdown()"
+  >
+    <span>
+      @if (selectedCourseIds().length === 0) {
+        Select Courses
+      } @else {
+        {{ selectedCourseIds().length }} course(s) selected
+      }
+    </span>
+
+    <span>{{ isOpen ? '▲' : '▼' }}</span>
+  </button>
+
+  @if (isOpen) {
+    <div class="dropdown">
+
+      @for (course of courses(); track course.id) {
+        <label class="course-option">
+
+          <input
+            type="checkbox"
+            [checked]="isSelected(course.id)"
+            (change)="toggleCourse(course.id)"
+          >
+
+          <span>{{ course.name }}</span>
+
+        </label>
+      }
+
+    </div>
+  }
+
+</div>

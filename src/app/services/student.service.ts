@@ -1,4 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
 import { Student } from '../models/student.models';
 
 @Injectable({
@@ -6,39 +8,51 @@ import { Student } from '../models/student.models';
 })
 export class StudentService {
 
- private students = signal<Student[]>([
-  {
-    id: 1,
-    name: 'Ali',
-    email: 'ali@example.com',
-    course: 'Computer Science'
-  },
-  {
-    id: 2,
-    name: 'Ahmed',
-    email: 'ahmed@example.com',
-    course: 'Software Engineering'
-  },
-  {
-    id: 3,
-    name: 'Sara',
-    email: 'sara@example.com',
-    course: 'Data Science'
-  }
-]);
+  private http = inject(HttpClient);
+
+  private apiUrl = 'http://localhost:3000/api/students';
+
+  private students = signal<Student[]>([]);
+
   getStudents() {
     return this.students.asReadonly();
   }
 
+  loadStudents() {
+    this.http.get<Student[]>(this.apiUrl).subscribe({
+      next: students => {
+        this.students.set(students);
+      },
+      error: error => {
+        console.error('Failed to load students:', error);
+      }
+    });
+  }
+
+  createStudent(student: {
+    name: string;
+    email: string;
+    age: number;
+    departmentId: number;
+    enrolledDate: string;
+    courseIds: number[];
+  }) {
+    return this.http.post(
+      this.apiUrl,
+      student
+    );
+  }
+
   addStudent(student: Omit<Student, 'id'>) {
-  this.students.update(currentStudents => [
-    ...currentStudents,
-    {
-      id: Date.now(),
-      ...student
-    }
-  ]);
-}
+    this.students.update(currentStudents => [
+      ...currentStudents,
+      {
+        id: Date.now(),
+        ...student
+      }
+    ]);
+  }
+
   deleteStudent(id: number) {
     this.students.update(currentStudents =>
       currentStudents.filter(student => student.id !== id)

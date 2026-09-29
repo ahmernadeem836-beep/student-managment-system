@@ -1,24 +1,32 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-
+import { DepartmentService } from '../../../services/department.service';
 import { StudentCard } from '../../../shared/student-card/student-card';
 import { StudentService } from '../../../services/student.service';
-
+import { CourseService } from '../../../services/course.service';
+import { CourseMultiSelect } from '../../../shared/course-multi-select/course-multi-select';
 @Component({
-  imports: [StudentCard, ReactiveFormsModule],
+  imports: [StudentCard, ReactiveFormsModule,CourseMultiSelect],
   selector: 'app-student-list',
   styleUrl: './student-list.css',
   templateUrl: './student-list.html',
 })
-export class StudentList {
+export class StudentList implements OnInit {
   private studentService = inject(StudentService);
 
   students = this.studentService.getStudents();
+  private departmentService = inject(DepartmentService);
+
+departments = this.departmentService.getDepartments();
+
+  private courseService = inject(CourseService);
+
+  courses = this.courseService.getCourses();
 
   studentForm = new FormGroup({
     name: new FormControl('', {
@@ -26,37 +34,58 @@ export class StudentList {
       validators: [Validators.required]
     }),
 
+
     email: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.email]
     }),
 
-    course: new FormControl('', {
-      nonNullable: true,
+    age: new FormControl<number | null>(null, {
       validators: [Validators.required]
-    })
-  });
+    }),
 
+    departmentId: new FormControl<number | null>(null, {
+      validators: [Validators.required]
+    }),
+    courseIds: new FormControl<number[]>([], {
+      nonNullable: true
+   })
+
+  });
+ngOnInit() {
+  this.studentService.loadStudents();
+  this.departmentService.loadDepartments();
+  this.courseService.loadCourses();
+}
   onStudentDeleted(studentId: number) {
     this.studentService.deleteStudent(studentId);
   }
 
   addStudent(event: SubmitEvent) {
-    event.preventDefault();
+  event.preventDefault();
 
-    if (this.studentForm.invalid) {
-      this.studentForm.markAllAsTouched();
-      return;
-    }
-
-    const { name, email, course } = this.studentForm.getRawValue();
-
-    this.studentService.addStudent({
-      name: name.trim(),
-      email: email.trim(),
-      course: course.trim()
-    });
-
-    this.studentForm.reset();
+  if (this.studentForm.invalid) {
+    this.studentForm.markAllAsTouched();
+    return;
   }
+
+  const { name, email, age, departmentId, courseIds } =
+  this.studentForm.getRawValue();
+
+  this.studentService.createStudent({
+    name: name.trim(),
+    email: email.trim(),
+    age: age!,
+    departmentId: departmentId!,
+    enrolledDate: new Date().toISOString().split('T')[0],
+    courseIds}).subscribe({
+    next: () => {
+      this.studentForm.reset();
+      this.studentService.loadStudents();
+    },
+    error: error => {
+      console.error('Failed to create student:', error);
+    }
+  });
+}
 }

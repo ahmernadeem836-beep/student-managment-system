@@ -2,5 +2,11 @@ export interface Student {
   id: number;
   name: string;
   email: string;
-  course: string;
+  age: number;
+  department_id: number;
+  enrolled_date: string;
+  department?: {
+    id: number;
+    name: string;
+  };
 }

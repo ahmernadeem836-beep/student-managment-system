@@ -1,6 +1,7 @@
 <h2>Add Student</h2>
 
 <form [formGroup]="studentForm" (submit)="addStudent($event)">
+
   <input
     type="text"
     placeholder="Student Name"
@@ -22,16 +23,42 @@
   }
 
   <input
-    type="text"
-    placeholder="Course"
-    formControlName="course"
+    type="number"
+    placeholder="Age"
+    formControlName="age"
   >
 
-  @if (studentForm.controls.course.touched && studentForm.controls.course.invalid) {
-    <small>Course is required.</small>
+  @if (studentForm.controls.age.touched && studentForm.controls.age.invalid) {
+    <small>Age is required.</small>
   }
 
-  <button type="submit">Add Student</button>
+  <select formControlName="departmentId">
+    <option [ngValue]="null">Select Department</option>
+
+    @for (department of departments(); track department.id) {
+      <option [ngValue]="department.id">
+        {{ department.name }}
+      </option>
+    }
+  </select>
+
+  @if (
+    studentForm.controls.departmentId.touched &&
+    studentForm.controls.departmentId.invalid
+  ) {
+    <small>Department is required.</small>
+  }
+
+<app-course-multi-select
+  [courses]="courses()"
+  [selectedCourseIds]="studentForm.controls.courseIds.value"
+  (selectedCourseIdsChange)="studentForm.controls.courseIds.setValue($event)"
+></app-course-multi-select>
+
+  <button type="submit">
+    Add Student
+  </button>
+
 </form>
 
 <h2>Students</h2>
