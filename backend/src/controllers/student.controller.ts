@@ -10,6 +10,7 @@ export class StudentController {
       const students = await this.service.getAllStudents();
 
       return res.json(students);
+
     } catch (error) {
       console.error(error);
 
@@ -86,7 +87,10 @@ export class StudentController {
     } catch (error: any) {
       console.error(error);
 
-      if (error.number === 2627 || error.number === 2601) {
+      if (
+        error.number === 2627 ||
+        error.number === 2601
+      ) {
         return res.status(409).json({
           message: 'Email already exists'
         });
@@ -116,9 +120,35 @@ export class StudentController {
         });
       }
 
+      const {
+        name,
+        email,
+        age,
+        departmentId,
+        courseIds
+      } = req.body;
+
+      if (
+        !name ||
+        !email ||
+        age === undefined ||
+        !departmentId ||
+        !Array.isArray(courseIds)
+      ) {
+        return res.status(400).json({
+          message: 'All student fields are required'
+        });
+      }
+
       const updatedStudent = await this.service.updateStudent(
         id,
-        req.body
+        {
+          name,
+          email,
+          age,
+          department_id: departmentId
+        },
+        courseIds
       );
 
       return res.json(updatedStudent);
@@ -126,7 +156,10 @@ export class StudentController {
     } catch (error: any) {
       console.error(error);
 
-      if (error.number === 2627 || error.number === 2601) {
+      if (
+        error.number === 2627 ||
+        error.number === 2601
+      ) {
         return res.status(409).json({
           message: 'Email already exists'
         });

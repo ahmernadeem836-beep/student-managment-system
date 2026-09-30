@@ -13,20 +13,68 @@ export class StudentService {
   private apiUrl = 'http://localhost:3000/api/students';
 
   private students = signal<Student[]>([]);
+  private loading = signal(false);
+  private error = signal('');
 
   getStudents() {
     return this.students.asReadonly();
   }
 
+  getLoading() {
+    return this.loading.asReadonly();
+  }
+
+  getError() {
+    return this.error.asReadonly();
+  }
+
   loadStudents() {
+    this.loading.set(true);
+    this.error.set('');
+
     this.http.get<Student[]>(this.apiUrl).subscribe({
+
       next: students => {
         this.students.set(students);
+        this.loading.set(false);
       },
+
       error: error => {
-        console.error('Failed to load students:', error);
+        console.error(
+          'Failed to load students:',
+          error
+        );
+
+        this.error.set(
+          'Failed to load students.'
+        );
+
+        this.loading.set(false);
       }
+
     });
+  }
+
+  getStudentById(id: number) {
+    return this.http.get<Student>(
+      `${this.apiUrl}/${id}`
+    );
+  }
+
+  updateStudent(
+    id: number,
+    student: {
+      name: string;
+      email: string;
+      age: number;
+      departmentId: number;
+      courseIds: number[];
+    }
+  ) {
+    return this.http.patch<Student>(
+      `${this.apiUrl}/${id}`,
+      student
+    );
   }
 
   createStudent(student: {
@@ -54,8 +102,8 @@ export class StudentService {
   }
 
   deleteStudent(id: number) {
-    this.students.update(currentStudents =>
-      currentStudents.filter(student => student.id !== id)
+    return this.http.delete(
+      `${this.apiUrl}/${id}`
     );
   }
 }

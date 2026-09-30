@@ -8,3 +8,7 @@
 <button (click)="studentDeleted.emit(student().id)">
   Delete
 </button>
+
+<a [routerLink]="['/students', student().id]">
+  View Details
+</a>

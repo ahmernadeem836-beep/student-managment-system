@@ -5,8 +5,11 @@ export interface Student {
   age: number;
   department_id: number;
   enrolled_date: string;
+
   department?: {
     id: number;
     name: string;
   };
+
+  courseIds?: number[];
 }

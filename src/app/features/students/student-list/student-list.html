@@ -1,6 +1,9 @@
 <h2>Add Student</h2>
 
-<form [formGroup]="studentForm" (submit)="addStudent($event)">
+<form
+  [formGroup]="studentForm"
+  (submit)="addStudent($event)"
+>
 
   <input
     type="text"
@@ -8,9 +11,15 @@
     formControlName="name"
   >
 
-  @if (studentForm.controls.name.touched && studentForm.controls.name.invalid) {
-    <small>Student name is required.</small>
+  @if (
+    studentForm.controls.name.touched &&
+    studentForm.controls.name.invalid
+  ) {
+    <small>
+      Student name is required.
+    </small>
   }
+
 
   <input
     type="email"
@@ -18,9 +27,15 @@
     formControlName="email"
   >
 
-  @if (studentForm.controls.email.touched && studentForm.controls.email.invalid) {
-    <small>Enter a valid email.</small>
+  @if (
+    studentForm.controls.email.touched &&
+    studentForm.controls.email.invalid
+  ) {
+    <small>
+      Enter a valid email.
+    </small>
   }
+
 
   <input
     type="number"
@@ -28,32 +43,55 @@
     formControlName="age"
   >
 
-  @if (studentForm.controls.age.touched && studentForm.controls.age.invalid) {
-    <small>Age is required.</small>
+  @if (
+    studentForm.controls.age.touched &&
+    studentForm.controls.age.invalid
+  ) {
+    <small>
+      Age is required.
+    </small>
   }
 
-  <select formControlName="departmentId">
-    <option [ngValue]="null">Select Department</option>
 
-    @for (department of departments(); track department.id) {
+  <select formControlName="departmentId">
+
+    <option [ngValue]="null">
+      Select Department
+    </option>
+
+    @for (
+      department of departments();
+      track department.id
+    ) {
+
       <option [ngValue]="department.id">
         {{ department.name }}
       </option>
+
     }
+
   </select>
 
   @if (
     studentForm.controls.departmentId.touched &&
     studentForm.controls.departmentId.invalid
   ) {
-    <small>Department is required.</small>
+    <small>
+      Department is required.
+    </small>
   }
 
-<app-course-multi-select
-  [courses]="courses()"
-  [selectedCourseIds]="studentForm.controls.courseIds.value"
-  (selectedCourseIdsChange)="studentForm.controls.courseIds.setValue($event)"
-></app-course-multi-select>
+
+  <app-course-multi-select
+    [courses]="courses()"
+    [selectedCourseIds]="
+      studentForm.controls.courseIds.value
+    "
+    (selectedCourseIdsChange)="
+      studentForm.controls.courseIds.setValue($event)
+    "
+  ></app-course-multi-select>
+
 
   <button type="submit">
     Add Student
@@ -61,11 +99,42 @@
 
 </form>
 
+
 <h2>Students</h2>
 
-@for (student of students(); track student.id) {
-  <app-student-card
-    [student]="student"
-    (studentDeleted)="onStudentDeleted($event)"
-  ></app-student-card>
+
+@if (isLoading()) {
+
+  <p>
+    Loading students...
+  </p>
+
+} @else if (errorMessage()) {
+
+  <p>
+    {{ errorMessage() }}
+  </p>
+
+} @else if (students().length === 0) {
+
+  <p>
+    No students found.
+  </p>
+
+} @else {
+
+  @for (
+    student of students();
+    track student.id
+  ) {
+
+    <app-student-card
+      [student]="student"
+      (studentDeleted)="
+        onStudentDeleted($event)
+      "
+    ></app-student-card>
+
+  }
+
 }

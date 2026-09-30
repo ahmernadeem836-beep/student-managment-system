@@ -1,0 +1,122 @@
+
+@if (isLoading()) {
+
+  <p>Loading student...</p>
+
+} @else {
+
+  <h2>Edit Student</h2>
+
+  <form
+    [formGroup]="studentForm"
+    (submit)="updateStudent()"
+  >
+
+    <div>
+      <label>Name</label>
+
+      <input
+        type="text"
+        formControlName="name"
+        placeholder="Student Name"
+      >
+
+      @if (
+        studentForm.controls.name.touched &&
+        studentForm.controls.name.invalid
+      ) {
+        <small>Student name is required.</small>
+      }
+    </div>
+
+
+    <div>
+      <label>Email</label>
+
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="Student Email"
+      >
+
+      @if (
+        studentForm.controls.email.touched &&
+        studentForm.controls.email.invalid
+      ) {
+        <small>Enter a valid email.</small>
+      }
+    </div>
+
+
+    <div>
+      <label>Age</label>
+
+      <input
+        type="number"
+        formControlName="age"
+        placeholder="Age"
+      >
+
+      @if (
+        studentForm.controls.age.touched &&
+        studentForm.controls.age.invalid
+      ) {
+        <small>Age is required.</small>
+      }
+    </div>
+
+
+    <div>
+      <label>Department</label>
+
+      <select formControlName="departmentId">
+
+        <option [ngValue]="null">
+          Select Department
+        </option>
+
+        @for (
+          department of departments();
+          track department.id
+        ) {
+
+          <option [ngValue]="department.id">
+            {{ department.name }}
+          </option>
+
+        }
+
+      </select>
+
+      @if (
+        studentForm.controls.departmentId.touched &&
+        studentForm.controls.departmentId.invalid
+      ) {
+        <small>Department is required.</small>
+      }
+
+    </div>
+<div>
+  <label>Courses</label>
+
+  <app-course-multi-select
+    [courses]="courses()"
+    [selectedCourseIds]="studentForm.controls.courseIds.value"
+    (selectedCourseIdsChange)="
+      studentForm.controls.courseIds.setValue($event)
+    "
+  ></app-course-multi-select>
+</div>
+
+    <button type="submit">
+      Update Student
+    </button>
+
+    <a [routerLink]="['/students', studentId]">
+      Cancel
+    </a>
+
+  </form>
+
+}
+

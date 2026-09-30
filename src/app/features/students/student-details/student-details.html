@@ -1,0 +1,58 @@
+@if (isLoading()) {
+
+  <p>Loading student...</p>
+
+} @else if (student()) {
+
+  <h2>Student Details</h2>
+
+  <div class="student-details">
+
+    <p>
+      <strong>ID:</strong>
+      {{ student()!.id }}
+    </p>
+
+    <p>
+      <strong>Name:</strong>
+      {{ student()!.name }}
+    </p>
+
+    <p>
+      <strong>Email:</strong>
+      {{ student()!.email }}
+    </p>
+
+    <p>
+      <strong>Age:</strong>
+      {{ student()!.age }}
+    </p>
+
+    <p>
+      <strong>Department:</strong>
+      {{ student()!.department?.name }}
+    </p>
+
+    <p>
+      <strong>Enrolled Date:</strong>
+      {{ student()!.enrolled_date }}
+    </p>
+
+  </div>
+
+  <a [routerLink]="['/students', student()!.id, 'edit']">
+  Edit Student
+</a>
+
+<br>
+
+
+  <a routerLink="/students">
+    Back to Students
+  </a>
+
+} @else {
+
+  <p>Student not found.</p>
+
+}
