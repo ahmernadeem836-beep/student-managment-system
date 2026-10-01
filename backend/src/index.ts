@@ -5,6 +5,8 @@ import courseRoutes from './routes/course.routes.js';
 import studentRoutes from './routes/student.routes.js';
 import { AppDataSource } from './config/data-source.js';
 import departmentRoutes from './routes/department.routes.js';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/swagger.js';
 import {
   Column,
   Entity,
@@ -30,7 +32,7 @@ AppDataSource.initialize()
   .catch((error) => {
     console.error('Database connection failed:', error);
   });
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(cors());
 app.use(express.json());
 

@@ -176,7 +176,7 @@ export class StudentForm implements OnInit {
           email: email.trim(),
           age: age!,
           departmentId: departmentId!,
-          courseIds
+          courseIds : courseIds
         }
       )
       .subscribe({
