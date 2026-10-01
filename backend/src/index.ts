@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import 'reflect-metadata';
 import express from 'express';
 import cors from 'cors';
@@ -7,6 +8,7 @@ import { AppDataSource } from './config/data-source.js';
 import departmentRoutes from './routes/department.routes.js';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger.js';
+import authRoutes from './routes/auth.routes.js';
 import {
   Column,
   Entity,
@@ -41,7 +43,7 @@ app.get('/', (_req, res) => {
     message: 'Student Management API is running'
   });
 });
-
+app.use('/api/auth', authRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/departments', departmentRoutes);
 app.use('/api/courses', courseRoutes);

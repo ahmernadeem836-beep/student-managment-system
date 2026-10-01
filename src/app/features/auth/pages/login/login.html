@@ -1,0 +1,73 @@
+<main class="login-shell">
+  <section class="brand-panel" aria-label="Student Management">
+    <div class="brand-lockup">
+      <span class="brand-mark" aria-hidden="true">S</span>
+      <span class="brand-name">Student<br>Management</span>
+    </div>
+
+    <div class="brand-lower">
+      <p class="brand-index">CAMPUS RECORDS <span> / </span> ACCESS</p>
+      <div class="brand-rule" aria-hidden="true"></div>
+      <p class="brand-caption">A place for every next step.</p>
+    </div>
+  </section>
+
+  <section class="form-panel" aria-labelledby="login-title">
+    <div class="form-content">
+      <p class="form-kicker"><span></span> ACCOUNT ACCESS</p>
+      <h1 id="login-title">Welcome back</h1>
+      <p class="form-intro">Sign in to continue.</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="submit()" novalidate>
+        <div class="field-group">
+          <label for="login">Username or email</label>
+          <input
+            id="login"
+            type="text"
+            formControlName="login"
+            placeholder="Username or email address"
+            autocomplete="username"
+            spellcheck="false"
+            [attr.aria-invalid]="loginForm.controls.login.touched && loginForm.controls.login.invalid"
+            aria-describedby="login-error"
+          >
+          @if (loginForm.controls.login.touched && loginForm.controls.login.hasError('required')) {
+            <span class="field-error" id="login-error">Enter your username or email.</span>
+          }
+        </div>
+
+        <div class="field-group">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            [attr.aria-invalid]="loginForm.controls.password.touched && loginForm.controls.password.invalid"
+            aria-describedby="password-error"
+          >
+          @if (loginForm.controls.password.touched && loginForm.controls.password.hasError('required')) {
+            <span class="field-error" id="password-error">Enter your password.</span>
+          }
+        </div>
+
+        @if (errorMessage()) {
+          <p class="form-error" role="alert">{{ errorMessage() }}</p>
+        }
+
+        <button type="submit" [disabled]="isLoading()">
+          @if (isLoading()) {
+            <span class="button-spinner" aria-hidden="true"></span>
+            Signing in
+          } @else {
+            Continue
+          }
+          <span class="button-arrow" aria-hidden="true">&#8594;</span>
+        </button>
+      </form>
+
+      <p class="form-footnote">Use your campus account credentials.</p>
+    </div>
+  </section>
+</main>

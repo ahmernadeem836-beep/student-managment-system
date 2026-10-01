@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+import { authenticateToken } from '../middleware/auth.middleware.js';
+import { authorizeRoles } from '../middleware/role.middleware.js';
 import { StudentController } from '../controllers/student.controller.js';
 
 const router = Router();
@@ -25,7 +27,12 @@ const controller = new StudentController();
  *       500:
  *         description: Failed to fetch students
  */
-router.get('/', controller.getAllStudents);
+router.get(
+	'/',
+	authenticateToken,
+	authorizeRoles('admin', 'teacher'),
+	controller.getAllStudents
+);
 
 /**
  * @swagger
