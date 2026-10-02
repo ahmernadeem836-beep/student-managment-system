@@ -17,13 +17,44 @@ const controller = new StudentController();
 
 /**
  * @swagger
+ * /api/students/me:
+ *   get:
+ *     summary: Get the authenticated student's record
+ *     tags: [Students]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: The authenticated student's record
+ *       401:
+ *         description: Authentication required or token invalid
+ *       403:
+ *         description: Access denied for this role
+ *       404:
+ *         description: No linked student record was found
+ */
+router.get(
+	'/me',
+	authenticateToken,
+	authorizeRoles('student'),
+	controller.getCurrentStudent
+);
+
+/**
+ * @swagger
  * /api/students:
  *   get:
  *     summary: Get all students
  *     tags: [Students]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of students
+ *       401:
+ *         description: Authentication required or token invalid
+ *       403:
+ *         description: Access denied for this role
  *       500:
  *         description: Failed to fetch students
  */
@@ -40,6 +71,8 @@ router.get(
  *   get:
  *     summary: Get a student by ID
  *     tags: [Students]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -54,10 +87,19 @@ router.get(
  *         description: Invalid student ID
  *       404:
  *         description: Student not found
+ *       401:
+ *         description: Authentication required or token invalid
+ *       403:
+ *         description: Access denied for this role
  *       500:
  *         description: Failed to fetch student
  */
-router.get('/:id', controller.getStudentById);
+router.get(
+	'/:id',
+	authenticateToken,
+	authorizeRoles('admin', 'teacher'),
+	controller.getStudentById
+);
 
 /**
  * @swagger
@@ -65,6 +107,8 @@ router.get('/:id', controller.getStudentById);
  *   post:
  *     summary: Create a new student
  *     tags: [Students]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -107,10 +151,19 @@ router.get('/:id', controller.getStudentById);
  *         description: Invalid student data
  *       409:
  *         description: Email already exists
+ *       401:
+ *         description: Authentication required or token invalid
+ *       403:
+ *         description: Access denied for this role
  *       500:
  *         description: Failed to create student
  */
-router.post('/', controller.createStudent);
+router.post(
+	'/',
+	authenticateToken,
+	authorizeRoles('admin'),
+	controller.createStudent
+);
 
 /**
  * @swagger
@@ -118,6 +171,8 @@ router.post('/', controller.createStudent);
  *   patch:
  *     summary: Update a student
  *     tags: [Students]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -163,10 +218,19 @@ router.post('/', controller.createStudent);
  *         description: Student not found
  *       409:
  *         description: Email already exists
+ *       401:
+ *         description: Authentication required or token invalid
+ *       403:
+ *         description: Access denied for this role
  *       500:
  *         description: Failed to update student
  */
-router.patch('/:id', controller.updateStudent);
+router.patch(
+	'/:id',
+	authenticateToken,
+	authorizeRoles('admin'),
+	controller.updateStudent
+);
 
 /**
  * @swagger
@@ -174,6 +238,8 @@ router.patch('/:id', controller.updateStudent);
  *   delete:
  *     summary: Delete a student
  *     tags: [Students]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -184,9 +250,18 @@ router.patch('/:id', controller.updateStudent);
  *     responses:
  *       200:
  *         description: Student deleted successfully
+ *       401:
+ *         description: Authentication required or token invalid
+ *       403:
+ *         description: Access denied for this role
  *       500:
  *         description: Failed to delete student
  */
-router.delete('/:id', controller.deleteStudent);
+router.delete(
+	'/:id',
+	authenticateToken,
+	authorizeRoles('admin'),
+	controller.deleteStudent
+);
 
 export default router;

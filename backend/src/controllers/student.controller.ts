@@ -5,6 +5,38 @@ export class StudentController {
 
   private service = new StudentService();
 
+  getCurrentStudent = async (req: Request, res: Response) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({
+          message: 'Authentication required'
+        });
+      }
+
+      const result = await this.service.getStudentByUserId(req.user.id);
+
+      if (result.status === 'unlinked') {
+        return res.status(404).json({
+          message: 'No student record is linked to this user'
+        });
+      }
+
+      if (result.status === 'not-found') {
+        return res.status(404).json({
+          message: 'The linked student record was not found'
+        });
+      }
+
+      return res.json(result.student);
+    } catch (error) {
+      console.error(error);
+
+      return res.status(500).json({
+        message: 'Failed to fetch current student'
+      });
+    }
+  };
+
   getAllStudents = async (_req: Request, res: Response) => {
     try {
       const students = await this.service.getAllStudents();

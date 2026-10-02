@@ -3,6 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { StudentService } from '../../../services/student.service';
 import { Student } from '../../../models/student.models';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-student-details',
@@ -14,6 +15,9 @@ export class StudentDetails implements OnInit {
 
   private route = inject(ActivatedRoute);
   private studentService = inject(StudentService);
+  private readonly authService = inject(AuthService);
+
+  readonly isAdmin = this.authService.isAdmin;
 
   student = signal<Student | null>(null);
   isLoading = signal(true);

@@ -1,0 +1,14 @@
+@if (authService.isAuthenticated()) {
+  @if (authService.currentUser(); as user) {
+    <header class="app-navbar">
+      <span class="brand">Student Management</span>
+      <div class="account">
+        <div class="identity">
+          <span class="username">{{ user.username }}</span>
+          <span class="role">{{ user.role }}</span>
+        </div>
+        <button type="button" (click)="logout()">Logout</button>
+      </div>
+    </header>
+  }
+}

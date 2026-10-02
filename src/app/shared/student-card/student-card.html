@@ -5,9 +5,11 @@
   <p>Department ID: {{ student().department_id }}</p>
 </div>
 
-<button (click)="studentDeleted.emit(student().id)">
-  Delete
-</button>
+@if (isAdmin()) {
+  <button (click)="studentDeleted.emit(student().id)">
+    Delete
+  </button>
+}
 
 <a [routerLink]="['/students', student().id]">
   View Details

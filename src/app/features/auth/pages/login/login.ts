@@ -7,7 +7,7 @@ import {
   Validators
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../../core/auth/auth.service';
+import { AuthService, type LoginResponse } from '../../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -49,9 +49,12 @@ export class Login {
     const { login, password } = this.loginForm.getRawValue();
 
     this.authService.login(login.trim(), password).subscribe({
-      next: () => {
+      next: ({ user }: LoginResponse) => {
         this.isLoading.set(false);
-        void this.router.navigateByUrl('/students');
+        const destination = user.role === 'student'
+          ? '/student-dashboard'
+          : '/students';
+        void this.router.navigateByUrl(destination);
       },
       error: (error: unknown) => {
         this.errorMessage.set(this.getErrorMessage(error));

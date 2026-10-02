@@ -14,6 +14,7 @@ import {
 import { DepartmentService } from '../../../services/department.service';
 import { StudentService } from '../../../services/student.service';
 import { CourseService } from '../../../services/course.service';
+import { AuthService } from '../../../core/auth/auth.service';
 
 import { StudentCard } from '../../../shared/student-card/student-card';
 import { CourseMultiSelect } from '../../../shared/course-multi-select/course-multi-select';
@@ -33,6 +34,9 @@ export class StudentList implements OnInit {
   private studentService = inject(StudentService);
   private departmentService = inject(DepartmentService);
   private courseService = inject(CourseService);
+  private readonly authService = inject(AuthService);
+
+  readonly isAdmin = this.authService.isAdmin;
 
   students = this.studentService.getStudents();
   isLoading = this.studentService.getLoading();

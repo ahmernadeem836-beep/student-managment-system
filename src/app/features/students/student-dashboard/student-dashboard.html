@@ -1,0 +1,16 @@
+@if (isLoading()) {
+  <p>Loading your profile...</p>
+} @else if (errorMessage()) {
+  <p>{{ errorMessage() }}</p>
+} @else if (student()) {
+  <h2>My Dashboard</h2>
+
+  <div class="student-profile">
+    <p><strong>Name:</strong> {{ student()!.name }}</p>
+    <p><strong>Email:</strong> {{ student()!.email }}</p>
+    <p><strong>Age:</strong> {{ student()!.age }}</p>
+    <p><strong>Department:</strong> {{ student()!.department?.name }}</p>
+    <p><strong>Enrolled Date:</strong> {{ student()!.enrolled_date }}</p>
+    <p><strong>Courses:</strong> {{ student()!.courseIds?.length ?? 0 }}</p>
+  </div>
+}

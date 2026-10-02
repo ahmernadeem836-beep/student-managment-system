@@ -15,4 +15,13 @@ export class UserRepository {
   async getById(id: number) {
     return await this.repository.findOne({ where: { id } });
   }
+
+  async getStudentIdByUserId(userId: number): Promise<number | null> {
+    const user = await this.repository.findOne({
+      where: { id: userId },
+      select: { student_id: true }
+    });
+
+    return user?.student_id ?? null;
+  }
 }

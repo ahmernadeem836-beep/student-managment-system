@@ -53,6 +53,7 @@ export class AuthService {
 
   readonly currentUser = this.userState.asReadonly();
   readonly isAuthenticated = computed(() => this.userState() !== null);
+  readonly isAdmin = computed(() => this.currentUser()?.role === 'admin');
 
   login(login: string, password: string): Observable<LoginResponse> {
     const request: LoginRequest = { login, password };

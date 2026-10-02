@@ -101,6 +101,11 @@ export class StudentService {
     ]);
   }
 
+getCurrentStudent() {
+  return this.http.get<Student>(`${this.apiUrl}/me`);
+}
+
+
   deleteStudent(id: number) {
     return this.http.delete(
       `${this.apiUrl}/${id}`

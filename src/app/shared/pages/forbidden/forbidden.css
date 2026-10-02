@@ -1,0 +1,57 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.forbidden-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+  background: #f4f6f7;
+  color: #202a31;
+  text-align: center;
+}
+
+.forbidden-content {
+  width: min(100%, 440px);
+}
+
+.status-code {
+  margin: 0 0 12px;
+  color: #a33b35;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.message {
+  margin: 12px 0 24px;
+  color: #53616a;
+  line-height: 1.5;
+}
+
+.return-link {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 4px;
+  background: #263b43;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.return-link:hover {
+  background: #1b2c33;
+}
+
+.return-link:focus-visible {
+  outline: 3px solid #a33b35;
+  outline-offset: 3px;
+}

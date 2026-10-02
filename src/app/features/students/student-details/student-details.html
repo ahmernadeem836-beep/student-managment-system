@@ -40,11 +40,13 @@
 
   </div>
 
-  <a [routerLink]="['/students', student()!.id, 'edit']">
-  Edit Student
-</a>
+  @if (isAdmin()) {
+    <a [routerLink]="['/students', student()!.id, 'edit']">
+      Edit Student
+    </a>
 
-<br>
+    <br>
+  }
 
 
   <a routerLink="/students">
