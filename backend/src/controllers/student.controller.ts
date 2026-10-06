@@ -1,6 +1,14 @@
 import { Request, Response } from 'express';
 import { StudentService } from '../services/student.service.js';
 
+function isDuplicateKeyError(error: unknown): boolean {
+  if (typeof error !== 'object' || error === null || !('number' in error)) {
+    return false;
+  }
+
+  return error.number === 2627 || error.number === 2601;
+}
+
 export class StudentController {
 
   private service = new StudentService();
@@ -116,13 +124,10 @@ export class StudentController {
 
       return res.status(201).json(student);
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
 
-      if (
-        error.number === 2627 ||
-        error.number === 2601
-      ) {
+      if (isDuplicateKeyError(error)) {
         return res.status(409).json({
           message: 'Email already exists'
         });
@@ -185,13 +190,10 @@ export class StudentController {
 
       return res.json(updatedStudent);
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
 
-      if (
-        error.number === 2627 ||
-        error.number === 2601
-      ) {
+      if (isDuplicateKeyError(error)) {
         return res.status(409).json({
           message: 'Email already exists'
         });

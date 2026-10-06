@@ -27,12 +27,8 @@ export class StudentDetails implements OnInit {
       this.route.snapshot.paramMap.get('id')
     );
 
-    console.log('Student ID:', id);
-
     this.studentService.getStudentById(id).subscribe({
       next: (student) => {
-        console.log('DETAIL STUDENT:', student);
-
         this.student.set(student);
         this.isLoading.set(false);
       },

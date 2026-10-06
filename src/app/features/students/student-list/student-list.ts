@@ -1,7 +1,8 @@
 import {
   Component,
   inject,
-  OnInit
+  OnInit,
+  signal
 } from '@angular/core';
 
 import {
@@ -41,6 +42,8 @@ export class StudentList implements OnInit {
   students = this.studentService.getStudents();
   isLoading = this.studentService.getLoading();
   errorMessage = this.studentService.getError();
+  isSaving = signal(false);
+  saveError = signal('');
 
   departments = this.departmentService.getDepartments();
   courses = this.courseService.getCourses();
@@ -87,6 +90,9 @@ export class StudentList implements OnInit {
   }
 
   onStudentDeleted(studentId: number) {
+    if (!window.confirm('Delete this student? This action cannot be undone.')) {
+      return;
+    }
 
     this.studentService
       .deleteStudent(studentId)
@@ -110,6 +116,10 @@ export class StudentList implements OnInit {
 
     event.preventDefault();
 
+    if (this.isSaving()) {
+      return;
+    }
+
     if (this.studentForm.invalid) {
 
       this.studentForm.markAllAsTouched();
@@ -124,6 +134,9 @@ export class StudentList implements OnInit {
       departmentId,
       courseIds
     } = this.studentForm.getRawValue();
+
+    this.isSaving.set(true);
+    this.saveError.set('');
 
     this.studentService
       .createStudent({
@@ -148,6 +161,7 @@ export class StudentList implements OnInit {
 
         next: () => {
 
+          this.isSaving.set(false);
           this.studentForm.reset();
 
           this.studentService.loadStudents();
@@ -160,6 +174,10 @@ export class StudentList implements OnInit {
             'Failed to create student:',
             error
           );
+          this.saveError.set(
+            'Unable to create student. Check the details and try again.'
+          );
+          this.isSaving.set(false);
 
         }
 

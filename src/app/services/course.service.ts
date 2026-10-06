@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Course } from '../models/course.models';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class CourseService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:3000/api/courses';
+  private apiUrl = `${environment.apiBaseUrl}/courses`;
 
   private courses = signal<Course[]>([]);
 

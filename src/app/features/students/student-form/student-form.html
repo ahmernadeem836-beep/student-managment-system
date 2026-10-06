@@ -108,8 +108,12 @@
   ></app-course-multi-select>
 </div>
 
-    <button type="submit">
-      Update Student
+    @if (saveError()) {
+      <p role="alert">{{ saveError() }}</p>
+    }
+
+    <button type="submit" [disabled]="isSaving()">
+      {{ isSaving() ? 'Updating...' : 'Update Student' }}
     </button>
 
     <a [routerLink]="['/students', studentId]">

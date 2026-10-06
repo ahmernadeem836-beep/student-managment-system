@@ -9,23 +9,6 @@ import departmentRoutes from './routes/department.routes.js';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger.js';
 import authRoutes from './routes/auth.routes.js';
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn
-} from 'typeorm';
-
-@Entity('courses')
-export class Course {
-  @PrimaryGeneratedColumn()
-  id!: number;
-
-  @Column('varchar')
-  name!: string;
-
-  @Column('int')
-  department_id!: number;
-}
 const app = express();
 AppDataSource.initialize()
   .then(() => {

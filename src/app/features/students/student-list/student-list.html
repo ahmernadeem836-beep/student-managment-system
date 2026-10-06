@@ -94,8 +94,12 @@
   ></app-course-multi-select>
 
 
-  <button type="submit">
-    Add Student
+  @if (saveError()) {
+    <p role="alert">{{ saveError() }}</p>
+  }
+
+  <button type="submit" [disabled]="isSaving()">
+    {{ isSaving() ? 'Creating...' : 'Add Student' }}
   </button>
 
 </form>

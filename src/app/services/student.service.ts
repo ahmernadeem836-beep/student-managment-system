@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Student } from '../models/student.models';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class StudentService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:3000/api/students';
+  private apiUrl = `${environment.apiBaseUrl}/students`;
 
   private students = signal<Student[]>([]);
   private loading = signal(false);
@@ -91,19 +92,9 @@ export class StudentService {
     );
   }
 
-  addStudent(student: Omit<Student, 'id'>) {
-    this.students.update(currentStudents => [
-      ...currentStudents,
-      {
-        id: Date.now(),
-        ...student
-      }
-    ]);
+  getCurrentStudent() {
+    return this.http.get<Student>(`${this.apiUrl}/me`);
   }
-
-getCurrentStudent() {
-  return this.http.get<Student>(`${this.apiUrl}/me`);
-}
 
 
   deleteStudent(id: number) {

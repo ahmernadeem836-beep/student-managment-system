@@ -45,6 +45,8 @@ export class StudentForm implements OnInit {
   studentId!: number;
 
   isLoading = signal(true);
+  isSaving = signal(false);
+  saveError = signal('');
 
   departments = this.departmentService.getDepartments();
   courses = this.courseService.getCourses();
@@ -93,8 +95,6 @@ export class StudentForm implements OnInit {
 
       const id = params.get('id');
 
-      console.log('EDIT PARAM ID:', id);
-
       if (!id) {
 
         console.error(
@@ -113,11 +113,6 @@ export class StudentForm implements OnInit {
         .subscribe({
 
           next: student => {
-
-            console.log(
-              'EDIT STUDENT:',
-              student
-            );
 
             this.studentForm.patchValue({
 
@@ -153,6 +148,10 @@ export class StudentForm implements OnInit {
 
   updateStudent(): void {
 
+    if (this.isSaving()) {
+      return;
+    }
+
     if (this.studentForm.invalid) {
 
       this.studentForm.markAllAsTouched();
@@ -167,6 +166,9 @@ export class StudentForm implements OnInit {
       departmentId,
       courseIds
     } = this.studentForm.getRawValue();
+
+    this.isSaving.set(true);
+    this.saveError.set('');
 
     this.studentService
       .updateStudent(
@@ -183,6 +185,7 @@ export class StudentForm implements OnInit {
 
         next: () => {
 
+          this.isSaving.set(false);
           this.router.navigate([
             '/students',
             this.studentId
@@ -196,6 +199,10 @@ export class StudentForm implements OnInit {
             'Failed to update student:',
             error
           );
+          this.saveError.set(
+            'Unable to update student. Check the details and try again.'
+          );
+          this.isSaving.set(false);
 
         }
 

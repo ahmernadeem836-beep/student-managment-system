@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export type AuthRole = 'admin' | 'teacher' | 'student';
 
@@ -47,7 +48,7 @@ function isAuthUser(value: unknown): value is AuthUser {
 })
 export class AuthService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:3000/api/auth/login';
+  private readonly apiUrl = `${environment.apiBaseUrl}/auth/login`;
   private readonly userState = signal<AuthUser | null>(this.restoreUser());
   private readonly tokenState = signal<string | null>(this.readStoredToken());
 
