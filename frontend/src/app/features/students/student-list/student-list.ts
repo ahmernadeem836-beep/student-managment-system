@@ -16,7 +16,7 @@ import { DepartmentService } from '../../../services/department.service';
 import { StudentService } from '../../../services/student.service';
 import { CourseService } from '../../../services/course.service';
 import { AuthService } from '../../../core/auth/auth.service';
-
+import { RouterLink } from '@angular/router';
 import { StudentCard } from '../../../shared/student-card/student-card';
 import { CourseMultiSelect } from '../../../shared/course-multi-select/course-multi-select';
 
@@ -24,7 +24,8 @@ import { CourseMultiSelect } from '../../../shared/course-multi-select/course-mu
   imports: [
     StudentCard,
     ReactiveFormsModule,
-    CourseMultiSelect
+    CourseMultiSelect,
+    RouterLink
   ],
   selector: 'app-student-list',
   styleUrl: './student-list.css',

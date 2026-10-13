@@ -1,0 +1,52 @@
+
+<div class="reports-page">
+  <h1>Student Course Reports</h1>
+  <p>Results and attendance data </p>
+
+  @if (loading()) {
+    <p>Loading reports...</p>
+  } @else if (error()) {
+    <p class="error">{{ error() }}</p>
+  } @else {
+    <p class="report-count">
+      Total records: {{ reports().length }}
+    </p>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Department</th>
+            <th>Course</th>
+            <th>Marks</th>
+            <th>Result</th>
+            <th>Attendance</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (report of reports(); track report.student_id + '-' + report.course_id) {
+            <tr>
+              <td>{{ report.student_name }}</td>
+              <td>{{ report.department_name }}</td>
+              <td>{{ report.course_name }}</td>
+              <td>
+                {{ report.marks_obtained ?? 'Not graded' }}
+                / {{ report.total_marks }}
+              </td>
+              <td>{{ report.result_status }}</td>
+              <td>
+                {{ report.attendance_percentage ?? 'N/A' }}%
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">No report records found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

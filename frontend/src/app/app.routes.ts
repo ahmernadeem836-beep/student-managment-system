@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { Reports } from './features/reports/reports';
 import { Login } from './features/auth/pages/login/login';
 import { Forbidden } from './shared/pages/forbidden/forbidden';
 import { StudentList } from './features/students/student-list/student-list';
@@ -30,6 +31,11 @@ export const routes: Routes = [
 {
   path: 'students/:id',
   component: StudentDetails,
+  canActivate: [authGuard, authorizeRoles('admin', 'teacher')]
+},
+{
+  path: 'reports',
+  component: Reports,
   canActivate: [authGuard, authorizeRoles('admin', 'teacher')]
 },
 {

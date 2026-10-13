@@ -1,0 +1,163 @@
+/* Main page spacing */
+:host {
+  display: block;
+  padding: 28px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #1f2937;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Reports navigation */
+.page-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+
+.reports-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 20px;
+  background: oklab(82.438% -0.19049 0.11116);
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.reports-button:hover {
+  background: lch(76.91% 64.17 158.46);
+  transform: translateY(-1px);
+}
+
+/* Section headings */
+h2 {
+  margin: 0 0 20px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Add Student form */
+form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 24px;
+  margin-bottom: 36px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+
+/* Inputs and dropdowns */
+form input,
+form select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+form input:focus,
+form select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* Validation messages */
+form small {
+  margin-top: -10px;
+  color: #dc2626;
+  font-size: 12px;
+}
+
+/* Course selector component occupies the full row */
+form app-course-multi-select {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+/* Form error message */
+form p[role="alert"] {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #dc2626;
+  font-size: 14px;
+}
+
+/* Add Student button */
+form button {
+  justify-self: start;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+form button:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading, empty and error messages */
+:host > p {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Student cards layout */
+app-student-card {
+  display: block;
+  margin-bottom: 16px;
+}
+
+/* Responsive layout */
+@media (max-width: 640px) {
+  :host {
+    padding: 16px;
+  }
+
+  h2 {
+    font-size: 21px;
+  }
+
+  form {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px;
+    gap: 14px;
+  }
+
+  form app-course-multi-select,
+  form p[role="alert"] {
+    grid-column: auto;
+  }
+
+  .reports-button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

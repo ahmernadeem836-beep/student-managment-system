@@ -9,6 +9,7 @@ import departmentRoutes from './routes/department.routes.js';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger.js';
 import authRoutes from './routes/auth.routes.js';
+import reportRoutes from './routes/report.routes.js';
 const app = express();
 AppDataSource.initialize()
   .then(() => {
@@ -30,6 +31,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/departments', departmentRoutes);
 app.use('/api/courses', courseRoutes);
+app.use('/api/reports', reportRoutes);
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });
